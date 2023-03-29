@@ -4,11 +4,12 @@ import conectarDB from './config/db.js';
 import socioRoutes from './routes/socioRoutes.js';
 
 const app = express();
+app.use(express.json());
 dotenv.config();
 
 conectarDB();
 
-app.use("/api/socios", socioRoutes);
+app.use("/", socioRoutes);
 
 const PORT = process.env.PORT || 4000;
 

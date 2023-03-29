@@ -1,8 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send("Desde API/SOCIOS");
-});
+import {
+  autenticarSocio
+} from '../controllers/sociosController.js';
+
+router.post('/login', autenticarSocio);
 
 export default router;
