@@ -21,6 +21,21 @@ const autenticarSocio = async (req, res) => {
   };
 };
 
+//El admin quiere consultar todos los socios
+const obtenerSocios = async (req,res) => {
+
+  try {
+
+    const listaSocios = await Socio.find({});
+    res.send(listaSocios)
+
+  } catch (error) {
+
+    return res.status(401).json({ msg: error.message });
+  }
+}
+
 export {
-  autenticarSocio
+  autenticarSocio,
+  obtenerSocios
 };
