@@ -23,19 +23,26 @@ const autenticarSocio = async (req, res) => {
 
 //El admin quiere consultar todos los socios
 const obtenerSocios = async (req,res) => {
+  const tipoUsuario = 'socio';
 
   try {
 
-    const listaSocios = await Socio.find({});
+    const listaSocios = await Socio.find({tipoUsuario});
     res.send(listaSocios)
 
   } catch (error) {
 
     return res.status(401).json({ msg: error.message });
   }
-}
+};
+
+//El admin carga el archivo de socios y se actualiza en la base de datos
+const cargarArchivo = async (req, res) => {
+  console.log(req.body);
+};
 
 export {
   autenticarSocio,
-  obtenerSocios
+  obtenerSocios,
+  cargarArchivo
 };
