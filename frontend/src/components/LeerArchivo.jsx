@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import clienteAxios from "../config/axios";
 
 function LeerArchivo() {
   const [socios, setSocios] = useState([]);
+  const [estadoBoton, setEstadoBoton] = useState(true);
 
   const handleFileUpload = (e) => {
     const archivo = e.target.files[0];
@@ -24,22 +26,33 @@ function LeerArchivo() {
     };
 
     reader.readAsBinaryString(archivo);
-  
+
+  };
+
+  const handleSubmitClick = async () => {
+    console.log(socios);
   };
 
   useEffect(() => {
 
     if (socios.length) {
-        console.log(socios)
+      setEstadoBoton(false);
     }
-    
+
   }, [socios])
-  
+
 
   return (
     <div>
       <h1>Subir archivo excel</h1>
-      <input type="file" accept=".xlsx" onChange={handleFileUpload} />
+      <input type="file" accept=".xls" onChange={handleFileUpload} />
+      <button
+        type="submit"
+        disabled={estadoBoton}
+        onClick={handleSubmitClick}
+      >
+        Subir Archivo
+      </button>
     </div>
   );
 }
