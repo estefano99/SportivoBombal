@@ -37,8 +37,12 @@ const obtenerSocios = async (req,res) => {
 };
 
 //El admin carga el archivo de socios y se actualiza en la base de datos
-const cargarArchivo = async (req, res) => {
-  console.log(req.body);
+const cargarArchivo = (req, res) => {
+  const body = req.body;
+
+  console.log(body.length);
+
+  res.send(body);
 };
 
 export {
