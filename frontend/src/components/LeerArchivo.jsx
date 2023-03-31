@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import * as XLSX from "xlsx";
 import clienteAxios from "../config/axios";
 import ListaSociosErroneos from "./ListaSociosErroneos";
 
