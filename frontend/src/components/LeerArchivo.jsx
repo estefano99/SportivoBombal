@@ -15,11 +15,11 @@ function LeerArchivo() {
       const workbook = XLSX.read(e.target.result, { type: "binary" });
       const hoja = workbook.Sheets[workbook.SheetNames[0]];
       const datos = XLSX.utils.sheet_to_json(hoja, { header: 1 });
-      
+
       const nuevosSocios1 = [];
       const nuevosSocios2 = [];
 
-      const primeraMitad = parseInt(datos.length/2);
+      const primeraMitad = parseInt(datos.length / 2);
 
       // Recorre los datos de la hoja y crea un objeto para cada socio
       for (let i = 1; i < primeraMitad; i++) {
@@ -39,10 +39,21 @@ function LeerArchivo() {
     reader.readAsBinaryString(archivo);
   };
 
+  const validarDNI = (arregloSocios) => {
+    arregloSocios.forEach(socio => {
+      const {dni, nombreCompleto} = socio;
+
+      if(dni === '' || dni.length > 8) {
+        console.log(`LA RE CONCHA DE TU MADRE: ${nombreCompleto}`);
+      };
+
+    });
+  };
+
   const sendData = async (socios) => {
     try {
       const response = await clienteAxios.post('/admin/cargar-archivo', socios);
-      console.log('Alalala'); // respuesta del servidor
+      console.log(response); // respuesta del servidor
     } catch (error) {
       console.log(error);
     }
@@ -62,10 +73,13 @@ function LeerArchivo() {
   useEffect(() => {
 
     if (socios1.length) {
-      setEstadoBoton(false);
-    }
+      const arregloSocios = [...socios1, ...socios2];
 
-  }, [socios1])
+      console.log(arregloSocios);
+      setEstadoBoton(false);
+    };
+
+  }, [socios1, socios2]);
 
 
   return (

@@ -13,7 +13,7 @@ const autenticarSocio = async (req, res) => {
   };
 
   //Validar el password(dni) ingresado
-  if(socio.dni === dni) {
+  if (socio.dni === dni) {
     return res.send(socio);
   } else {
     const error = new Error("El DNI es incorrecto");
@@ -22,12 +22,12 @@ const autenticarSocio = async (req, res) => {
 };
 
 //El admin quiere consultar todos los socios
-const obtenerSocios = async (req,res) => {
+const obtenerSocios = async (req, res) => {
   const tipoUsuario = 'socio';
 
   try {
 
-    const listaSocios = await Socio.find({tipoUsuario});
+    const listaSocios = await Socio.find({ tipoUsuario });
     res.send(listaSocios)
 
   } catch (error) {
@@ -37,13 +37,29 @@ const obtenerSocios = async (req,res) => {
 };
 
 //El admin carga el archivo de socios y se actualiza en la base de datos
-const cargarArchivo = (req, res) => {
+const cargarArchivo = async (req, res) => {
   const body = req.body;
 
-  console.log(body.length);
+  for (const socio of body) {
+    const { dni, codigo, nombreCompleto, cuotasAdeudadas } = socio;
 
-  res.send(body);
+    try {
+      const existeSocio = await Socio.findOne({ dni });
+
+      if (existeSocio) {
+        await Socio.updateOne({ dni }, {cuotasAdeudadas });
+      } else {
+        await Socio.create({ dni, codigo, nombreCompleto, cuotasAdeudadas });
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).send('Error al cargar el archivo');
+    }
+  }
+
+  res.send();
 };
+
 
 export {
   autenticarSocio,
