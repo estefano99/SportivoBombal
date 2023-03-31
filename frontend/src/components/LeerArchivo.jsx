@@ -18,25 +18,25 @@ function LeerArchivo() {
       const workbook = XLSX.read(e.target.result, { type: "binary" });
       const hoja = workbook.Sheets[workbook.SheetNames[0]];
       const datos = XLSX.utils.sheet_to_json(hoja, { header: 1 });
-      
+
       const nuevosSocios1 = [];
       const nuevosSocios2 = [];
 
       //! DUDA SOBRE ESTO, y si son impares que pasa? toma uno demas o uno menos en la division?
-      const primeraMitad = parseInt(datos.length/2);
+      const primeraMitad = parseInt(datos.length / 2);
 
       // Recorre los datos de la hoja y crea un objeto para cada socio
       for (let i = 1; i < primeraMitad; i++) {
         const [codigo, nombreCompleto, cuotasAdeudadas, dni] = datos[i];
 
         if (!dni || dni.length > 8 || dni.length < 8) {
-          
+
           const nuevoErroneo = {
             nombreCompleto,
             dni
           }
 
-          setSociosErroneo((prev) =>[...prev,nuevoErroneo]); // agrega un nuevo socio erróneo al arreglo
+          setSociosErroneo((prev) => [...prev, nuevoErroneo]); // agrega un nuevo socio erróneo al arreglo
 
         } else {
 
@@ -53,10 +53,10 @@ function LeerArchivo() {
             nombreCompleto,
             dni
           }
-          
-         setSociosErroneo((prev) =>[...prev,nuevoErroneo]); // agrega un nuevo socio erróneo al arreglo
 
-        } else{
+          setSociosErroneo((prev) => [...prev, nuevoErroneo]); // agrega un nuevo socio erróneo al arreglo
+
+        } else {
 
           nuevosSocios2.push({ codigo, nombreCompleto, cuotasAdeudadas, dni });
         }
@@ -98,32 +98,55 @@ function LeerArchivo() {
     if (socios1.length) {
       if (sociosErroneo.length > 0) {
         setEstadoBoton(true)
-      }else{
+      } else {
         setEstadoBoton(false)
       }
     }
 
-  }, [socios1,sociosErroneo])
+  }, [socios1, sociosErroneo])
 
 
   return (
-    <div>
-      <h1>Subir archivo excel</h1>
-      <input type="file" accept=".xls" onChange={handleFileUpload} />
-      <button
-        type="submit"
-        disabled={estadoBoton}
-        onClick={handleSubmitClick}
-      >
-        Subir Archivo
-      </button>
-      {
-        sociosErroneo && 
-        sociosErroneo.map((socio,index) => (
-            <ListaSociosErroneos key={index} socio={socio}  />
-          ))
-      }
-    </div>
+    <>
+      <h1
+        className="font-bold text-5xl text-yellow-400 text-center bg-indigo-900 py-6 mb-5">
+        SUBIR ARCHIVO DE EXCEL
+      </h1>
+      <div className="w-11/12 mx-auto">
+        <div className="flex flex-col">
+          <input
+            type="file"
+            accept=".xls"
+            onChange={handleFileUpload}
+            className="text-xl mx-auto my-3"
+          />
+          <button
+            type="submit"
+            disabled={estadoBoton}
+            onClick={handleSubmitClick}
+            className="disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed bg-indigo-600 text-yellow-400 hover:bg-indigo-500 py-3 my-6 w-6/12 mx-auto rounded-xl transition-all"
+          >
+            IMPORTAR LISTA DE SOCIOS
+          </button>
+        </div>
+
+        {
+          sociosErroneo.length ?
+            <div className="bg-yellow-200 border-zinc-800 border-2 my-5">
+              <h2 className="bg-yellow-300 text-2xl text-center py-3 font-bold">Listado de socios con DNI incorrecto</h2>
+              <ul>
+                {
+                  sociosErroneo &&
+                  sociosErroneo.map((socio, index) => (
+                    <ListaSociosErroneos key={index} socio={socio} />
+                  ))
+                }
+              </ul>
+            </div>
+            : null
+        }
+      </div>
+    </>
   );
 }
 
