@@ -1,10 +1,11 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
-import LeerArchivo from './pages/LeerArchivo';
-import UsuariosLayout from './layout/UsuariosLayout';
 import AdminsLayout from './layout/AdminsLayout';
-import AdminInicio from './pages/AdminInicio';
+import UsuariosLayout from './layout/UsuariosLayout';
+import AdminInicio from './pages/admin/AdminInicio';
+import LeerArchivo from './pages/admin/LeerArchivo';
 import Login from './pages/Login';
+import Perfil from './pages/socio/Perfil';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<UsuariosLayout />}>
           <Route index element={<Login />}/>
+          <Route path='/perfil/:dni' element={<Perfil />}/>
         </Route>
 
         <Route path='/admin' element={<AdminsLayout />}>

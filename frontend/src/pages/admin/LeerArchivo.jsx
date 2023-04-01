@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import clienteAxios from "../config/axios";
-import ListaSociosErroneos from "../components/ListaSociosErroneos";
+import clienteAxios from "../../config/axios";
+import ListaSociosErroneos from "../../components/ListaSociosErroneos";
 
 function LeerArchivo() {
   const [socios1, setSocios1] = useState([]);
