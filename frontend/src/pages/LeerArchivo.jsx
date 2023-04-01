@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import clienteAxios from "../config/axios";
-import ListaSociosErroneos from "./ListaSociosErroneos";
+import ListaSociosErroneos from "../components/ListaSociosErroneos";
 
 function LeerArchivo() {
   const [socios1, setSocios1] = useState([]);
@@ -12,7 +12,6 @@ function LeerArchivo() {
   const handleFileUpload = (e) => {
     const archivo = e.target.files[0];
     const reader = new FileReader();
-
 
     reader.onload = (e) => {
       const workbook = XLSX.read(e.target.result, { type: "binary" });
@@ -104,7 +103,6 @@ function LeerArchivo() {
     }
 
   }, [socios1, sociosErroneo])
-
 
   return (
     <>
