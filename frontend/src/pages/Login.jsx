@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Alerta from '../components/Alerta';
+import clienteAxios from "../config/axios";
 
 const Login = () => {
   const [alerta, setAlerta] = useState({});
@@ -7,7 +8,7 @@ const Login = () => {
   const apellido = useRef();
   const dni = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     //Validacion de Apellido y DNI
@@ -17,10 +18,29 @@ const Login = () => {
 
     setAlerta({});
 
-    console.log("iniciando sesion");
+    //Manda la info al Back
+    try {
+      const url = "/login"
+
+      const data = {
+        apellido: apellido.current.value,
+        dni: dni.current.value
+      }
+      
+      const response = await clienteAxios.post(url, data);
+      console.log("Navegacion hacia la pagina de QR")
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error:true
+      })
+      console.log(error)
+    }
+    
   }
 
   const { msg } = alerta;
+
 
   return (
     <>

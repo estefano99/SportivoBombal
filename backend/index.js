@@ -11,7 +11,19 @@ dotenv.config();
 
 conectarDB();
 
-app.use(cors({ origin: '*' }));
+//Configuracion para Cors
+const dominiosPermitidos = ["http://127.0.0.1:5173"]
+const corsOptions = {
+  origin: (origin,callback) => {
+    if (dominiosPermitidos.indexOf(origin) !== -1) {
+      callback(null,true)
+    }else{
+      callback(new Error("No permitido por cors"))
+    }
+  }
+}
+app.use(cors(corsOptions));
+// app.use(cors({ origin: '*' }));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
