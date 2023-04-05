@@ -44,7 +44,7 @@ const cargarArchivo = async (req, res) => {
       const existeSocio = await Socio.findOne({ dni });
 
       if (existeSocio) {
-        await Socio.updateOne({ dni }, {cuotasAdeudadas });
+        await Socio.updateOne({ dni }, { cuotasAdeudadas });
       } else {
         await Socio.create({ dni, codigo, nombreCompleto, cuotasAdeudadas });
       }
@@ -52,9 +52,10 @@ const cargarArchivo = async (req, res) => {
       console.log(`Error: ${error}`);
       return res.status(500).send('Error al cargar el archivo');
     }
-  }
+  };
 
-  res.send();
+  // Devolver respuesta al front
+  res.send({msg: "Los socios se han creado o actualizado con exito!"});
 };
 
 

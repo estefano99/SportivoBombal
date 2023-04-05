@@ -1,9 +1,13 @@
 import { useRef, useState } from 'react';
 import Alerta from '../components/Alerta';
 import clienteAxios from "../config/axios";
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [alerta, setAlerta] = useState({});
+
+  const navigate = useNavigate();
 
   const apellido = useRef();
   const dni = useRef();
@@ -28,7 +32,14 @@ const Login = () => {
       }
       
       const response = await clienteAxios.post(url, data);
-      console.log("Navegacion hacia la pagina de QR")
+      
+      const tipoUsuario = response.data.tipoUsuario;
+
+      if(tipoUsuario === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/perfil') //COMPLETAR EL NAVIGATE
+      }
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,

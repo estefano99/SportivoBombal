@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import * as XLSX from "xlsx";
 import clienteAxios from "../../config/axios";
-import ListaSociosErroneos from "../../components/ListaSociosErroneos";
+import SocioErroneo from "../../components/SocioErroneo";
+import Alerta from "../../components/Alerta";
 
 function LeerArchivo() {
   const [socios1, setSocios1] = useState([]);
   const [socios2, setSocios2] = useState([]);
   const [estadoBoton, setEstadoBoton] = useState(true);
   const [sociosErroneo, setSociosErroneo] = useState([]); //Guarda los socios que tienen mal ingresado el dni
+  const [alerta, setAlerta] = useState({});
+
+  const navigate = useNavigate();
 
   const handleFileUpload = (e) => {
     const archivo = e.target.files[0];
@@ -70,17 +75,18 @@ function LeerArchivo() {
   };
 
   const sendData = async (socios) => {
-
     try {
       const response = await clienteAxios.post('/admin/cargar-archivo', socios);
-      console.log('Alalala'); // respuesta del servidor
+      setAlerta({ msg: response.data.msg, error: false });
+      setTimeout(() => {
+        navigate('/admin');
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleSubmitClick = async () => {
-
     try {
       const promise1 = sendData(socios1);
       const promise2 = sendData(socios2);
@@ -92,7 +98,6 @@ function LeerArchivo() {
   };
 
   useEffect(() => {
-
     //Primero pregunta si socios fue cargado, despues si hay socios mal cargados, y depende de si hay (socios erroneos o no) el cambio del Boton.
     if (socios1.length) {
       if (sociosErroneo.length > 0) {
@@ -104,12 +109,21 @@ function LeerArchivo() {
 
   }, [socios1, sociosErroneo])
 
+  const { msg } = alerta;
+
   return (
     <>
       <h1
         className="font-bold text-5xl text-yellow-400 text-center bg-indigo-900 py-6 mb-5">
         SUBIR ARCHIVO DE EXCEL
       </h1>
+
+      {msg &&
+        <Alerta
+          alerta={alerta}
+        />
+      }
+
       <div className="w-11/12 mx-auto">
         <div className="flex flex-col">
           <input
@@ -136,7 +150,7 @@ function LeerArchivo() {
                 {
                   sociosErroneo &&
                   sociosErroneo.map((socio, index) => (
-                    <ListaSociosErroneos key={index} socio={socio} />
+                    <SocioErroneo key={index} socio={socio} />
                   ))
                 }
               </ul>

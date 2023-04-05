@@ -1,7 +1,6 @@
 import React from "react";
 
-const ListaSociosErroneos = ({ socio }) => {
-  console.log(socio)
+const SocioErroneo = ({ socio }) => {
   return <>
     <li className="p-3 border-t-2 border-zinc-700 flex"> 
       <p className="w-2/3"><span className="font-semibold">Nombre:</span> {socio.nombreCompleto}</p>
@@ -10,4 +9,4 @@ const ListaSociosErroneos = ({ socio }) => {
   </>
 };
 
-export default ListaSociosErroneos;
+export default SocioErroneo;
