@@ -13,20 +13,7 @@ const Login = () => {
   const apellido = useRef();
   const dni = useRef();
 
-  useEffect(() => {
-    // Redireccionamiento automatico si hay datos almacenados en localStorage
-    // No se si se tendrá que hacer con el provider o que
-    
-    // const user = JSON.parse(localStorage.getItem("userData"));
-    // if(!user) return;
-
-    // const {tipoUsuario, dniBack} = user;
-    // if(tipoUsuario === 'admin') {
-    //   navigate('/admin')
-    // } else {
-    //   navigate(`/perfil/${dniBack}`)
-    // };
-  } ,[]);
+  const { setAuth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +35,7 @@ const Login = () => {
       
       // Post al back
       const response = await clienteAxios.post(url, data);
+      
 
       // Se destructura la info del socio
       const tipoUsuario = response.data.tipoUsuario;
@@ -57,6 +45,9 @@ const Login = () => {
       // Se almacena la info en el localStorage
       const socioData = {tipoUsuario, dniBack, codigoSocio};
       localStorage.setItem("userData", JSON.stringify(socioData));
+      
+      //Actualiza para poder navegar hacia el perfil.
+      setAuth( response.data )
 
       // Se redirecciona dependiendo del tipoUsuario
       if(tipoUsuario === 'admin') {

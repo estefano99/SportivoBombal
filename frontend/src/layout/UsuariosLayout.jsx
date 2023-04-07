@@ -12,7 +12,7 @@ const UsuariosLayout = () => {
   return (
     <main>
       {/* SI EN EL OBJETO AUTH HAY UNA PROPIEDAD LLAMADA codigoSocio */}
-      {auth?.codigoSocio ? <Outlet /> : <Navigate to="/" />}
+      {Object.keys(auth).length !== 0 ? <Outlet /> : <Navigate to="/" />}
       <Footer />
     </main>
   )
