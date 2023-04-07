@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Alerta from '../components/Alerta';
 import clienteAxios from "../config/axios";
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const [alerta, setAlerta] = useState({});
@@ -11,6 +12,21 @@ const Login = () => {
 
   const apellido = useRef();
   const dni = useRef();
+
+  useEffect(() => {
+    // Redireccionamiento automatico si hay datos almacenados en localStorage
+    // No se si se tendrá que hacer con el provider o que
+    
+    // const user = JSON.parse(localStorage.getItem("userData"));
+    // if(!user) return;
+
+    // const {tipoUsuario, dniBack} = user;
+    // if(tipoUsuario === 'admin') {
+    //   navigate('/admin')
+    // } else {
+    //   navigate(`/perfil/${dniBack}`)
+    // };
+  } ,[]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,22 +40,31 @@ const Login = () => {
 
     //Manda la info al Back
     try {
-      const url = "/login"
-
+      const url = "/login";
       const data = {
         apellido: apellido.current.value,
         dni: dni.current.value
-      }
+      };
       
+      // Post al back
       const response = await clienteAxios.post(url, data);
-      
-      const tipoUsuario = response.data.tipoUsuario;
 
+      // Se destructura la info del socio
+      const tipoUsuario = response.data.tipoUsuario;
+      const dniBack = response.data.dni;
+      const codigoSocio = response.data.codigo;
+
+      // Se almacena la info en el localStorage
+      const socioData = {tipoUsuario, dniBack, codigoSocio};
+      localStorage.setItem("userData", JSON.stringify(socioData));
+
+      // Se redirecciona dependiendo del tipoUsuario
       if(tipoUsuario === 'admin') {
         navigate('/admin')
       } else {
-        navigate('/perfil') //COMPLETAR EL NAVIGATE
-      }
+        navigate(`/perfil/${dniBack}`)
+      };
+
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
@@ -47,11 +72,9 @@ const Login = () => {
       })
       console.log(error)
     }
-    
-  }
+  };
 
   const { msg } = alerta;
-
 
   return (
     <>
@@ -67,7 +90,7 @@ const Login = () => {
             <label className="block text-gray-700 font-bold mb-2" htmlFor="apellido">
               Apellido
             </label>
-            <input ref={apellido} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellido" type="text" placeholder="Ingresa tu Apellido" />
+            <input autoComplete='off' ref={apellido} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellido" type="text" placeholder="Ingresa tu Apellido" />
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 font-bold mb-2" htmlFor="dni">
@@ -87,6 +110,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </>
   )
 }
