@@ -1,12 +1,17 @@
-import {Outlet} from 'react-router-dom';
+import {Outlet, Navigate} from 'react-router-dom';
 import Footer from '../components/Footer';
+import useAuth from '../hooks/useAuth';
 
 const AdminsLayout = () => {
+  const { auth, cargando } = useAuth();
+
   return (
     <>
-      <h1>Desde AdminsLayout</h1>
-      <Outlet />
+      <main>
+      {/* SI EN EL OBJETO AUTH HAY UNA PROPIEDAD LLAMADA codigoSocio */}
+      {auth.tipoUsuario === "admin" ? <Outlet /> : <Navigate to="/" />}
       <Footer />
+    </main>
     </>
   )
 }

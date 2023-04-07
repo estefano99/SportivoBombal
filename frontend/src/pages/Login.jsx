@@ -40,10 +40,9 @@ const Login = () => {
       // Se destructura la info del socio
       const tipoUsuario = response.data.tipoUsuario;
       const dniBack = response.data.dni;
-      const codigoSocio = response.data.codigo;
 
       // Se almacena la info en el localStorage
-      const socioData = {tipoUsuario, dniBack, codigoSocio};
+      const socioData = {tipoUsuario, dniBack};
       localStorage.setItem("userData", JSON.stringify(socioData));
       
       //Actualiza para poder navegar hacia el perfil.
@@ -87,7 +86,7 @@ const Login = () => {
             <label className="block text-gray-700 font-bold mb-2" htmlFor="dni">
               DNI
             </label>
-            <input ref={dni} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="dni" type="tel" placeholder="Ingresa tu DNI" />
+            <input ref={dni} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="dni" type="number" pattern="\d*" inputMode="numeric" placeholder="Ingresa tu DNI" />
           </div>
 
           {msg && <Alerta
