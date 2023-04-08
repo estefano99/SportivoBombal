@@ -1,10 +1,13 @@
 import Socio from "../models/Socio.js";
+import sanitize from "mongo-sanitize";
 
 const autenticarSocio = async (req, res) => {
-  const { nombreCompleto, dni } = req.body;
+  //Valida que no haya una inyeccion noSQL
+  const apellido = sanitize(req.body.apellido);
+  const dni = sanitize(req.body.dni);
 
   //Consultar si existe el socio en la base de datos
-  const socio = await Socio.findOne({ nombreCompleto });
+  const socio = await Socio.findOne({ dni });
 
   //Si el socio no existe muestra un error
   if (!socio) {
@@ -12,13 +15,7 @@ const autenticarSocio = async (req, res) => {
     return res.status(401).json({ msg: error.message });
   };
 
-  //Validar el password(dni) ingresado
-  if (socio.dni === dni) {
-    return res.send(socio);
-  } else {
-    const error = new Error("El DNI es incorrecto");
-    return res.status(401).json({ msg: error.message });
-  };
+  return res.send(socio);
 };
 
 //El admin quiere consultar todos los socios
@@ -47,7 +44,7 @@ const cargarArchivo = async (req, res) => {
       const existeSocio = await Socio.findOne({ dni });
 
       if (existeSocio) {
-        await Socio.updateOne({ dni }, {cuotasAdeudadas });
+        await Socio.updateOne({ dni }, { cuotasAdeudadas });
       } else {
         await Socio.create({ dni, codigo, nombreCompleto, cuotasAdeudadas });
       }
@@ -55,9 +52,10 @@ const cargarArchivo = async (req, res) => {
       console.log(`Error: ${error}`);
       return res.status(500).send('Error al cargar el archivo');
     }
-  }
+  };
 
-  res.send();
+  // Devolver respuesta al front
+  res.send({msg: "Los socios se han creado o actualizado con exito!"});
 };
 
 
