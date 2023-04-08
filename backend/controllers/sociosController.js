@@ -7,7 +7,7 @@ const autenticarSocio = async (req, res) => {
   const dni = sanitize(req.body.dni);
 
   //Consultar si existe el socio en la base de datos
-  const socio = await Socio.findOne({ dni });
+  const socio = await Socio.findOne({ dni }).select("tipoUsuario dni");
 
   //Si el socio no existe muestra un error
   if (!socio) {
@@ -17,6 +17,20 @@ const autenticarSocio = async (req, res) => {
 
   return res.send(socio);
 };
+
+//Devuelve los datos del socio para mostrar en el perfil.
+const mostrarPerfil = async (req,res) => {
+
+  try {
+    const { id } = req.params;
+    const socio = await Socio.findById(id).select("nombreCompleto");
+    res.send(socio);
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 //El admin quiere consultar todos los socios
 const obtenerSocios = async (req, res) => {
@@ -62,5 +76,6 @@ const cargarArchivo = async (req, res) => {
 export {
   autenticarSocio,
   obtenerSocios,
-  cargarArchivo
+  cargarArchivo,
+  mostrarPerfil
 };

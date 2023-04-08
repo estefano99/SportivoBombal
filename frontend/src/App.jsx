@@ -19,7 +19,7 @@ function App() {
 
           {/* RUTA PROTEGIDA DEL SOCIO */}
           <Route path='/perfil' element={<UsuariosLayout />}>
-            <Route path=':dni' element={<Perfil />} />
+            <Route path=':id' element={<Perfil />} />
           </Route>
 
           {/* RUTAS PROTEGIDA DEL ADMIN */}
