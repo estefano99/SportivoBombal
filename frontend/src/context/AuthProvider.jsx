@@ -31,12 +31,18 @@ const AuthProvider = ({ children }) => {
     autenticarUsuario();
   }, [])
 
+  const cerrarSesion = () => {
+    localStorage.removeItem("socioData");
+    setAuth({});
+  };
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         setAuth,
-        cargando //Se pasa el cargando, para saber cuando es que se termina de hacer el seteo de los states.
+        cargando, //Se pasa el cargando, para saber cuando es que se termina de hacer el seteo de los states.
+        cerrarSesion
       }}
     >
       {children}

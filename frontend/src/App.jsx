@@ -4,6 +4,7 @@ import AdminsLayout from './layout/AdminsLayout';
 import UsuariosLayout from './layout/UsuariosLayout';
 import AdminInicio from './pages/admin/AdminInicio';
 import LeerArchivo from './pages/admin/LeerArchivo';
+import ListaSocios from './pages/admin/ListaSocios';
 import Login from './pages/Login';
 import Perfil from './pages/socio/Perfil';
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/admin' element={<AdminsLayout />}>
             <Route index element={<AdminInicio />} />
             <Route path='cargar-archivo' element={<LeerArchivo />} />
+            <Route path='socios' element={<ListaSocios />} />
           </Route>
         </Routes>
       </AuthProvider>

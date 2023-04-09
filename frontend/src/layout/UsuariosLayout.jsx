@@ -4,7 +4,6 @@ import useAuth from '../hooks/useAuth';
 
 const UsuariosLayout = () => {
   const { auth, cargando } = useAuth();
-  console.log(auth)
 
   return (
     <>
