@@ -5,7 +5,8 @@ import {
   autenticarSocio,
   obtenerSocios,
   cargarArchivo,
-  mostrarPerfil
+  mostrarPerfil,
+  devolverSocio
 } from '../controllers/sociosController.js';
 
 router.post('/login', autenticarSocio);
@@ -18,5 +19,8 @@ router.get('/admin/socios', obtenerSocios);
 
 //Ruta donde se hace la carga del archivo socios
 router.post('/admin/cargar-archivo', cargarArchivo);
+
+//Devuelve los datos de un socio al leer un QR
+router.post('/admin/scanner-qr', devolverSocio)
 
 export default router;

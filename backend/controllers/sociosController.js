@@ -31,6 +31,16 @@ const mostrarPerfil = async (req,res) => {
   }
 }
 
+// Devolver un socio al leer el QR
+const devolverSocio = async (req, res) => {
+  const {id} = req.body;
+  try {
+    const socio = await Socio.findById(id);
+    res.send(socio);
+  } catch (error) {
+    //Mostrar errores !!!!
+  }
+};
 
 //El admin quiere consultar todos los socios
 const obtenerSocios = async (req, res) => {
@@ -77,5 +87,6 @@ export {
   autenticarSocio,
   obtenerSocios,
   cargarArchivo,
-  mostrarPerfil
+  mostrarPerfil,
+  devolverSocio
 };

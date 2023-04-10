@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Perfil from './pages/socio/Perfil';
 
 import { AuthProvider } from './context/AuthProvider';
+import ScannerQR from './pages/admin/ScannerQR';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route index element={<AdminInicio />} />
             <Route path='cargar-archivo' element={<LeerArchivo />} />
             <Route path='socios' element={<ListaSocios />} />
+            <Route path='scanner-qr' element={<ScannerQR />} />
           </Route>
         </Routes>
       </AuthProvider>
