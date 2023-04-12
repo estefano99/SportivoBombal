@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useZxing } from 'react-zxing';
 import socioAxios from '../../config/axios';
+import Alerta from '../../components/Alerta';
 
 const ScannerQR = () => {
-  const [result, setResult] = useState('');
-  const [estado, setEstado] = useState('');
-  const [data, setData] = useState({});
-  const [pause, setPause] = useState(false);
+  const [result, setResult] = useState(''); 
+  const [estado, setEstado] = useState(''); //Se Muestra una clase u otra dependiendo si adeuda o al dia.
+  const [data, setData] = useState({});  //Guarda la data de lo que viene del back
+  const [pause, setPause] = useState(false); //Pausa la camara
+  const [alerta, setAlerta] = useState({}); //Mensaje de alerta
   const { ref } = useZxing({
     onResult(result) {
       setResult(result.getText());
@@ -32,12 +34,17 @@ const ScannerQR = () => {
           console.log(socio.data.cuotasAdeudadas);
         };
       } catch (error) {
-        console.log(error);
+        console.log(error)
+        return setAlerta({ msg: error.socio.data.msg, error:true });
       }
+      //En caso de que no salga por el catch
+      setAlerta({});
     };
     devolverSocio();
 
   }, [result])
+
+  const { msg } = alerta;
 
   return (
     <>
@@ -53,6 +60,9 @@ const ScannerQR = () => {
         {Object.keys(data).length !== 0 ?
           <div className={`${estado === 'deuda' ? 'bg-red-400' : 'bg-green-400'} w-3/4 h-52 mx-auto mt-12 flex flex-col items-center`}>
             <div className={`${estado === 'deuda' ? 'bg-red-500' : 'bg-green-500'} w-full h-10 flex justify-center items-center text-center text-xl uppercase font-bold`}>
+              {msg && <Alerta
+              alerta={alerta}
+            />}
               <p>resultado</p>
             </div>
             <div className='flex flex-col items-center gap-5'>

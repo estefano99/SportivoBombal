@@ -24,10 +24,17 @@ const mostrarPerfil = async (req,res) => {
   try {
     const { id } = req.params;
     const socio = await Socio.findById(id).select("nombreCompleto");
+
+    //En caso de que no exista el socio, aunque no deberia pasar porque si llego hasta aca es porque paso el Login
+    if (!socio) {
+      const error = new Error("El socio no existe");
+      return res.status(401).json({ msg: error.message });
+    }
+
     res.send(socio);
     
   } catch (error) {
-    console.log(error)
+    return res.status(401).json({ msg: error });
   }
 }
 
@@ -36,9 +43,17 @@ const devolverSocio = async (req, res) => {
   const {id} = req.body;
   try {
     const socio = await Socio.findById(id);
+
+    //En caso de que haya pasado otro qr y no tenga un id o el ID de ese QR este mal.
+    if (!socio) {
+      const error = new Error("El socio no existe");
+      return res.status(401).json({ msg: error.message });
+    }
+    
     res.send(socio);
   } catch (error) {
-    //Mostrar errores !!!!
+    const errorCreado = new Error("Socio no registrado");
+    return res.status(401).json({ msg: errorCreado.message});
   }
 };
 
