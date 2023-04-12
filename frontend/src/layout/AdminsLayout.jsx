@@ -1,4 +1,4 @@
-import {Outlet, Navigate} from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import useAuth from '../hooks/useAuth';
 
@@ -7,11 +7,11 @@ const AdminsLayout = () => {
 
   return (
     <>
-      <main>
-      {/* SI EN EL OBJETO AUTH HAY UNA PROPIEDAD LLAMADA codigoSocio */}
-      {auth.tipoUsuario === "admin" ? <Outlet /> : <Navigate to="/" />}
+      <main className='container mx-auto h-screen'>
+        {/* SI EN EL OBJETO AUTH HAY UNA PROPIEDAD LLAMADA codigoSocio */}
+        {auth.tipoUsuario === "admin" ? <Outlet /> : <Navigate to="/" />}
+      </main>
       <Footer />
-    </main>
     </>
   )
 }

@@ -36,23 +36,22 @@ const Login = () => {
       // Post al back
       const response = await clienteAxios.post(url, data);
       
-
       // Se destructura la info del socio
       const tipoUsuario = response.data.tipoUsuario;
-      const dniBack = response.data.dni;
+      const id = response.data._id;
 
       // Se almacena la info en el localStorage
-      const socioData = {tipoUsuario, dniBack};
-      localStorage.setItem("userData", JSON.stringify(socioData));
+      const socioData = {tipoUsuario, id};
+      localStorage.setItem("socioData", JSON.stringify(socioData));
       
       //Actualiza para poder navegar hacia el perfil.
-      setAuth( response.data )
+      setAuth( socioData )
 
       // Se redirecciona dependiendo del tipoUsuario
       if(tipoUsuario === 'admin') {
         navigate('/admin')
       } else {
-        navigate(`/perfil/${dniBack}`)
+        navigate(`/perfil/${id}`)
       };
 
     } catch (error) {
